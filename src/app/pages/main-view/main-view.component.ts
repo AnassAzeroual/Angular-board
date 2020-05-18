@@ -4,44 +4,45 @@ import {
   moveItemInArray,
   transferArrayItem,
 } from "@angular/cdk/drag-drop";
-import { Board } from "src/app/models/board.model";
-import { Column } from "src/app/models/column.model";
+import { SocketService } from "../../ioService/socket.service";
+
 
 @Component({
   selector: "app-main-view",
   templateUrl: "./main-view.component.html",
   styleUrls: ["./main-view.component.scss"],
 })
+
 export class MainViewComponent implements OnInit {
-  constructor() {}
 
-  board: Board = new Board("Test Board Drop Zone", [
-    new Column("Ideas", [
-      "Some random idea",
-      "This is another random idea",
-      "build an awesome application",
-    ]),
-    new Column("Research", [
-      "Lorem ipsum",
-      "foo",
-      "This was in the 'Research' column",
-    ]),
-    new Column("Todo", [
-      "Get to work",
-      "Pick up groceries",
-      "Go home",
-      "Fall asleep",
-    ]),
-    new Column("Done", [
-      "Get up",
-      "Brush teeth",
-      "Take a shower",
-      "Check e-mail",
-      "Walk dog",
-    ]),
-  ]);
+  board: any = {
+    name: "Test Board Drop Zone",
+    columns: [{
+      name: "Ideas",
+      tasks: ["Some random idea", "This is another random idea", "build an awesome application"]
+    }, {
+      name: "Research",
+      tasks: ["Lorem ipsum", "foo", "This was in the 'Research' column"]
+    }, {
+      name: "Todo",
+      tasks: ["Get to work", "Pick up groceries", "Go home", "Fall asleep"]
+    }, {
+      name: "Done",
+      tasks: ["Get up", "Brush teeth", "Take a shower", "Check e-mail", "Walk dog"]
+    }]
+  }
 
-  ngOnInit() {}
+  constructor(private io: SocketService) {
+    this.io.joinRoom({
+      room: "Room1",
+    });
+    // tslint:disable-next-line: no-shadowed-variable
+    this.io.getMessages().subscribe((data) => {
+      this.board = data['response'];
+    });
+  }
+
+  ngOnInit() { }
 
   drop(event: CdkDragDrop<string[]>) {
     if (event.previousContainer === event.container) {
@@ -58,5 +59,9 @@ export class MainViewComponent implements OnInit {
         event.currentIndex
       );
     }
+
+    this.io.sendMessage(this.board)
+
   }
+
 }
