@@ -9,4 +9,3 @@ npm install
 # open in browser
 
 ng s -o
-ng s -o --port 2020
