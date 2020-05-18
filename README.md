@@ -9,4 +9,18 @@ npm install
 # open in browser
 
 ng s -o
-ng s -o --port 2020
+
+# requirements CLI
+
+Angular CLI: 9.1.6 
+Or higher than that
+
+# requirements Node
+
+Node: 12.16.2
+Or higher than that
+
+# info Workspace
+
+Ivy Workspace: Yes
+
