@@ -6,11 +6,15 @@ import { AppComponent } from './app.component';
 import { MainViewComponent } from './pages/main-view/main-view.component';
 
 import {DragDropModule} from '@angular/cdk/drag-drop';
+import { SecondViewComponent } from './pages/second-view/second-view.component';
+import { ThirdViewComponent } from './pages/third-view/third-view.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    MainViewComponent
+    MainViewComponent,
+    SecondViewComponent,
+    ThirdViewComponent
   ],
   imports: [
     BrowserModule,

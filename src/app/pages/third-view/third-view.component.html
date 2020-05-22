@@ -1,0 +1,9 @@
+  <div class="chessboard" cdkDropListGroup>
+    <div *ngFor="let that of listOfElements.conatiner" class="{{that.class}}">
+      <div cdkDropList [cdkDropListData]="that.item" (cdkDropListDropped)="drop($event)">
+        <div *ngFor="let src of that.item" cdkDrag>
+          <div><img [src]="src"></div>
+        </div>
+      </div>
+    </div>
+  </div>

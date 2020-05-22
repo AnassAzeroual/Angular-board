@@ -1,0 +1,33 @@
+<div class="root">
+  <div class="navbar has-background-dark">
+    <div class="navbar-brand">
+      <div class="navbar-item">
+        <h1 class="app-name has-gradient-text">Project Name</h1>
+      </div>
+    </div>
+  </div>
+
+  <div class="board" style="border: 1px solid red;">
+
+    <div class="board-bar">
+      <p class="board-name">Test Board Drop Zone</p>
+    </div>
+
+    <div>
+      <div cdkDropListGroup class="containers">
+        <div *ngFor="let zones of board.items" class="zones">
+          <div class="listtarget" cdkDropList [cdkDropListData]="zones.container" (cdkDropListDropped)="drop($event)">
+            <div *ngFor="let item of zones.container" cdkDrag class="drogzone">
+              <div class="items">{{item}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+<div style="color: azure;">
+  {{board | json}}
+</div>
