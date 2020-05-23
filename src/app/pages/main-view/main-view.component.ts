@@ -38,7 +38,9 @@ export class MainViewComponent implements OnInit {
     });
     // tslint:disable-next-line: no-shadowed-variable
     this.io.getMessages().subscribe((data) => {
-      this.board = data['response'];
+      this.board = data['msg'];
+      console.log(data);
+
     });
   }
 
