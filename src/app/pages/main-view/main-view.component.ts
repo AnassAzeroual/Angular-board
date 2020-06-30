@@ -3,6 +3,7 @@ import {
   CdkDragDrop,
   moveItemInArray,
   transferArrayItem,
+  CdkDragEnd,
 } from "@angular/cdk/drag-drop";
 import { SocketService } from "../../ioService/socket.service";
 
@@ -15,22 +16,37 @@ import { SocketService } from "../../ioService/socket.service";
 
 export class MainViewComponent implements OnInit {
 
-  board: any = {
-    name: "Test Board Drop Zone",
-    columns: [{
-      name: "Ideas",
-      tasks: ["Some random idea", "This is another random idea", "build an awesome application"]
-    }, {
-      name: "Research",
-      tasks: ["Lorem ipsum", "foo", "This was in the 'Research' column"]
-    }, {
-      name: "Todo",
-      tasks: ["Get to work", "Pick up groceries", "Go home", "Fall asleep"]
-    }, {
-      name: "Done",
-      tasks: ["Get up", "Brush teeth", "Take a shower", "Check e-mail", "Walk dog"]
-    }]
-  }
+
+
+
+
+  board: any =
+    {
+      columns: [
+        {
+          id: 2020,
+          name: "Ideas",
+          tasks: ["Some random idea", "This is another random idea", "build an awesome application"]
+        }, {
+          id: 2021,
+          name: "Research",
+          tasks: ["Lorem ipsum", "foo", "This was in the 'Research' column"]
+        }, {
+          id: 2022,
+          name: "Todo",
+          tasks: ["Get to work", "Pick up groceries", "Go home", "Fall asleep"]
+        }, {
+          id: 2023,
+          name: "Done",
+          tasks: ["Get up", "Brush teeth", "Take a shower", "Check e-mail", "Walk dog"]
+        }
+      ]
+    }
+
+
+  obj: CdkDragDrop<string[]>
+
+
 
   constructor(private io: SocketService) {
     this.io.joinRoom({
@@ -38,22 +54,42 @@ export class MainViewComponent implements OnInit {
     });
     // tslint:disable-next-line: no-shadowed-variable
     this.io.getMessages().subscribe((data) => {
-      this.board = data['msg'];
-      console.log(data);
+      // this.board = data['msg'];
+      // console.log(data);
+      console.log("res event io", data['msg']);
 
+      // this.drop(data['msg']);
     });
   }
 
   ngOnInit() { }
 
   drop(event: CdkDragDrop<string[]>) {
-    if (event.previousContainer === event.container) {
+
+    if (event.previousContainer.id === event.container.id) {
+      let params = {
+        previousContainerID: event.previousContainer.id,
+        containerID: event.container.id,
+        containerData: event.container.data,
+        previousIndex: event.previousIndex,
+        currentIndex: event.currentIndex,
+      }
+      this.io.sendMessage(params)
+
       moveItemInArray(
         event.container.data,
         event.previousIndex,
         event.currentIndex
       );
     } else {
+      let params2 = {
+        oldZoneId: event.previousContainer.id,
+        newZoneId: event.container.id,
+        previousIndex: event.previousIndex,
+        currentIndex: event.currentIndex
+      }
+      this.io.sendMessage(params2)
+
       transferArrayItem(
         event.previousContainer.data,
         event.container.data,
@@ -61,9 +97,10 @@ export class MainViewComponent implements OnInit {
         event.currentIndex
       );
     }
+  }
 
-    this.io.sendMessage(this.board)
-
+  positions(e) {
+    console.log(e.distance)
   }
 
 }

@@ -15,15 +15,17 @@
 
     <div class="board-wrapper">
 
-      <div class="board-columns" cdkDropListGroup>
-        <div class="board-column" *ngFor="let column of board.columns">
+      <div class="board-columns">
+        <div class="board-column" *ngFor="let column of board.columns" cdkDrag (cdkDragEnded)='positions($event)'
+          [cdkDragFreeDragPosition]="dragPosition">
 
           <div class="column-title">
             {{ column.name }}
           </div>
 
-          <div class="tasks-container" cdkDropList [cdkDropListData]="column.tasks" (cdkDropListDropped)="drop($event)">
-            <div class="task" *ngFor="let item of column.tasks" cdkDrag>
+          <div class="tasks-container" [id]="column.id" cdkDropList [cdkDropListData]="column.tasks"
+            (cdkDropListDropped)="drop($event)">
+            <div class="task" *ngFor="let item of column.tasks" cdkDrag (cdkDragEnded)="dragEnd($event)">
               {{ item }}
             </div>
           </div>

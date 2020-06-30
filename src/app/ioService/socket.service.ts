@@ -6,7 +6,7 @@ import { Observable, BehaviorSubject } from "rxjs";
   providedIn: "root",
 })
 export class SocketService {
-  readonly uri: string = "ws://localhost:81/event";
+  readonly uri: string = "ws://localhost:3000/event";
   private socket: any;
   public response: boolean;
   private status = new BehaviorSubject<boolean>(false);
